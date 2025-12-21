@@ -23,6 +23,6 @@ COPY --from=builder /build/zig-out/bin/z4 /app/z4
 
 RUN mkdir /app/data
 VOLUME /app/data
-EXPOSE 8080 8081
+EXPOSE 9670 9671
 
 CMD ["/app/z4", "server"]

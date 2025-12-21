@@ -14,8 +14,8 @@ zig build -Doptimize=ReleaseFast  # Optimized release build
 ## Running the Server
 
 ```bash
-zig build run -- --port 8080 --data ./data --debug
-zig build run -- --join 192.168.1.10:8081 --id node2  # Join existing cluster
+zig build run -- --port 9670 --data ./data --debug
+zig build run -- --join 192.168.1.10:9671 --id node2  # Join existing cluster
 ```
 
 Key flags: `--port`, `--gossip-port`, `--data`, `--id`, `--join`, `--threads`, `--vnodes`, `--debug`

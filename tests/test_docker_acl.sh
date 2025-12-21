@@ -12,11 +12,11 @@ docker build -t z4:latest .
 # Run without keys (we will create them)
 docker rm -f z4-acl >/dev/null 2>&1 || true
 rm -rf $(pwd)/data/_z4meta/keys/* 2>/dev/null || true
-docker run -d --name z4-acl -p 8080:8080 -v $(pwd)/data:/app/data z4:latest /app/z4 server
+docker run -d --name z4-acl -p 9670:9670 -v $(pwd)/data:/app/data z4:latest /app/z4 server
 
 echo "Waiting for service..."
 for i in {1..30}; do
-    if curl -s http://localhost:8080/ > /dev/null; then
+    if curl -s http://localhost:9670/ > /dev/null; then
         echo "Service is up!"
         break
     fi
@@ -77,17 +77,17 @@ do_curl() {
 }
 
 echo "Creating bucket..."
-AUTH_URL="http://localhost:8080/acl-bucket"
+AUTH_URL="http://localhost:9670/acl-bucket"
 do_curl "PUT" "$AUTH_URL" "" ""
 
 echo "Putting object..."
-OBJ_URL="http://localhost:8080/acl-bucket/test.txt"
+OBJ_URL="http://localhost:9670/acl-bucket/test.txt"
 BODY="ACL Test Content"
 do_curl "PUT" "$OBJ_URL" "$BODY" ""
 
 echo "Setting bucket ACL..."
 # Query param in URL
-ACL_URL="http://localhost:8080/acl-bucket?acl="
+ACL_URL="http://localhost:9670/acl-bucket?acl="
 ACL_BODY="owner=admin&grant=user1:READ&grant=user2:WRITE"
 do_curl "PUT" "$ACL_URL" "$ACL_BODY" ""
 
@@ -111,7 +111,7 @@ else
 fi
 
 echo "Setting object ACL..."
-OBJ_ACL_URL="http://localhost:8080/acl-bucket/test.txt?acl="
+OBJ_ACL_URL="http://localhost:9670/acl-bucket/test.txt?acl="
 OBJ_ACL_BODY="owner=fileowner&grant=reader:READ"
 do_curl "PUT" "$OBJ_ACL_URL" "$OBJ_ACL_BODY" ""
 

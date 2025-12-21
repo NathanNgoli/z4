@@ -9,11 +9,11 @@ docker compose down || true
 
 echo "Starting Docker container..."
 docker build -t z4:latest .
-docker run -d --name z4-encryption -p 8080:8080 -v $(pwd)/data:/app/data z4:latest /app/z4 server
+docker run -d --name z4-encryption -p 9670:9670 -v $(pwd)/data:/app/data z4:latest /app/z4 server
 
 echo "Waiting for service..."
 for i in {1..30}; do
-    if curl -s http://localhost:8080/ > /dev/null; then
+    if curl -s http://localhost:9670/ > /dev/null; then
         echo "Service is up!"
         break
     fi
@@ -26,10 +26,10 @@ cleanup() {
 trap cleanup EXIT
 
 echo "Creating bucket..."
-curl -X PUT http://localhost:8080/enc-bucket
+curl -X PUT http://localhost:9670/enc-bucket
 
 echo "Checking encryption (should be 404 - not configured)..."
-ENC_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:8080/enc-bucket?encryption")
+ENC_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:9670/enc-bucket?encryption")
 if [ "$ENC_STATUS" = "404" ]; then
     echo "SUCCESS: No encryption configured (404)"
 else
@@ -38,10 +38,10 @@ else
 fi
 
 echo "Setting bucket encryption..."
-curl -X PUT "http://localhost:8080/enc-bucket?encryption" -d '{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"AES256"}}]}'
+curl -X PUT "http://localhost:9670/enc-bucket?encryption" -d '{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"AES256"}}]}'
 
 echo "Getting bucket encryption..."
-ENC_CONFIG=$(curl -s "http://localhost:8080/enc-bucket?encryption")
+ENC_CONFIG=$(curl -s "http://localhost:9670/enc-bucket?encryption")
 echo "Encryption Config: $ENC_CONFIG"
 
 if echo "$ENC_CONFIG" | grep -q "AES256"; then
@@ -52,7 +52,7 @@ else
 fi
 
 echo "Deleting bucket encryption..."
-DELETE_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X DELETE "http://localhost:8080/enc-bucket?encryption")
+DELETE_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X DELETE "http://localhost:9670/enc-bucket?encryption")
 if [ "$DELETE_STATUS" = "204" ]; then
     echo "SUCCESS: Encryption deleted (204)"
 else
@@ -61,7 +61,7 @@ else
 fi
 
 echo "Verifying encryption deleted (should get 404)..."
-GET_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:8080/enc-bucket?encryption")
+GET_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:9670/enc-bucket?encryption")
 if [ "$GET_STATUS" = "404" ]; then
     echo "SUCCESS: Encryption not found (404)"
 else

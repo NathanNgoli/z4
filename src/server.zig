@@ -634,7 +634,7 @@ pub const Server = struct {
         var xml_buffer = std.ArrayList(u8){};
         defer xml_buffer.deinit(self.allocator);
 
-        const location = std.fmt.allocPrint(self.allocator, "http://localhost:8080/{s}/{s}", .{ bucket, key }) catch return;
+        const location = std.fmt.allocPrint(self.allocator, "http://localhost:9670/{s}/{s}", .{ bucket, key }) catch return;
         defer self.allocator.free(location);
 
         s3.writeCompleteMultipartUploadResult(self.allocator, xml_buffer.writer(self.allocator), location, bucket, key, etag) catch {

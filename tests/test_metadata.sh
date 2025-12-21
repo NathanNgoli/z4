@@ -5,7 +5,7 @@ set -e
 rm -rf data
 echo "Building z4 for host..."
 zig build
-./zig-out/bin/z4 server --port 8080 --data data --debug > server.log 2>&1 &
+./zig-out/bin/z4 server --port 9670 --data data --debug > server.log 2>&1 &
 PID=$!
 sleep 1
 
@@ -67,12 +67,12 @@ do_curl() {
 
 # 1. Create Bucket
 echo "Creating bucket..."
-AUTH_URL="http://localhost:8080/meta-bucket"
+AUTH_URL="http://localhost:9670/meta-bucket"
 do_curl "PUT" "$AUTH_URL" "" ""
 
 # 2. Put Object with Content-Type
 echo "Putting object with Content-Type..."
-OBJ_URL="http://localhost:8080/meta-bucket/hello.txt"
+OBJ_URL="http://localhost:9670/meta-bucket/hello.txt"
 BODY="Hello Metadata"
 do_curl "PUT" "$OBJ_URL" "$BODY" "Content-Type: text/plain"
 
@@ -108,7 +108,7 @@ fi
 # 5. Multipart Abort Test (Basic)
 echo "Testing Multipart Abort..."
 # Init
-MP_URL="http://localhost:8080/meta-bucket/mp?uploads="
+MP_URL="http://localhost:9670/meta-bucket/mp?uploads="
 UPLOAD_ID=$(do_curl "POST" "$MP_URL" "" "" | sed -n 's/.*<UploadId>\(.*\)<\/UploadId>.*/\1/p')
 echo "Upload ID: $UPLOAD_ID"
 
@@ -121,7 +121,7 @@ else
 fi
 
 # Abort
-ABORT_URL="http://localhost:8080/meta-bucket/mp?uploadId=$UPLOAD_ID"
+ABORT_URL="http://localhost:9670/meta-bucket/mp?uploadId=$UPLOAD_ID"
 do_curl "DELETE" "$ABORT_URL" "" ""
 
 # Check dir gone

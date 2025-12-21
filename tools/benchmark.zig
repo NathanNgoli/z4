@@ -10,7 +10,7 @@ pub fn main() !void {
     const args = try std.process.argsAlloc(allocator);
     defer std.process.argsFree(allocator, args);
 
-    var endpoint: []const u8 = "http://localhost:8080";
+    var endpoint: []const u8 = "http://localhost:9670";
     var concurrency: usize = 10;
     var duration_s: u64 = 10;
 

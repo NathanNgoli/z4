@@ -9,11 +9,11 @@ docker compose down || true
 
 echo "Starting Docker container..."
 docker build -t z4:latest .
-docker run -d --name z4-policy-enforce -p 8080:8080 -v $(pwd)/data:/app/data z4:latest /app/z4 server
+docker run -d --name z4-policy-enforce -p 9670:9670 -v $(pwd)/data:/app/data z4:latest /app/z4 server
 
 echo "Waiting for service..."
 for i in {1..30}; do
-    if curl -s http://localhost:8080/ > /dev/null; then
+    if curl -s http://localhost:9670/ > /dev/null; then
         echo "Service is up!"
         break
     fi
@@ -26,13 +26,13 @@ cleanup() {
 trap cleanup EXIT
 
 echo "Creating bucket..."
-curl -X PUT http://localhost:8080/enforce-bucket
+curl -X PUT http://localhost:9670/enforce-bucket
 
 echo "Putting test object..."
-curl -X PUT http://localhost:8080/enforce-bucket/test.txt -d "Hello World"
+curl -X PUT http://localhost:9670/enforce-bucket/test.txt -d "Hello World"
 
 echo "Getting object (should work with no policy)..."
-RESULT=$(curl -s http://localhost:8080/enforce-bucket/test.txt)
+RESULT=$(curl -s http://localhost:9670/enforce-bucket/test.txt)
 if echo "$RESULT" | grep -q "Hello"; then
     echo "SUCCESS: Object accessible with no policy"
 else
@@ -54,10 +54,10 @@ DENY_POLICY='{
 }'
 
 echo "Setting DENY policy..."
-curl -X PUT "http://localhost:8080/enforce-bucket?policy" -H "Content-Type: application/json" -d "$DENY_POLICY"
+curl -X PUT "http://localhost:9670/enforce-bucket?policy" -H "Content-Type: application/json" -d "$DENY_POLICY"
 
 echo "Getting object (should be denied by policy)..."
-DENY_RESULT=$(curl -s -w "\n%{http_code}" http://localhost:8080/enforce-bucket/test.txt)
+DENY_RESULT=$(curl -s -w "\n%{http_code}" http://localhost:9670/enforce-bucket/test.txt)
 HTTP_CODE=$(echo "$DENY_RESULT" | tail -1)
 if [ "$HTTP_CODE" = "403" ]; then
     echo "SUCCESS: Access denied by policy (403)"
@@ -66,10 +66,10 @@ else
 fi
 
 echo "Deleting policy..."
-curl -s -X DELETE "http://localhost:8080/enforce-bucket?policy"
+curl -s -X DELETE "http://localhost:9670/enforce-bucket?policy"
 
 echo "Getting object after policy removed..."
-ALLOW_RESULT=$(curl -s http://localhost:8080/enforce-bucket/test.txt)
+ALLOW_RESULT=$(curl -s http://localhost:9670/enforce-bucket/test.txt)
 if echo "$ALLOW_RESULT" | grep -q "Hello"; then
     echo "SUCCESS: Object accessible after policy removed"
 else

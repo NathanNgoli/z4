@@ -9,11 +9,11 @@ docker compose down || true
 
 echo "Starting Docker container..."
 docker build -t z4:latest .
-docker run -d --name z4-tagging -p 8080:8080 -v $(pwd)/data:/app/data z4:latest /app/z4 server
+docker run -d --name z4-tagging -p 9670:9670 -v $(pwd)/data:/app/data z4:latest /app/z4 server
 
 echo "Waiting for service..."
 for i in {1..30}; do
-    if curl -s http://localhost:8080/ > /dev/null; then
+    if curl -s http://localhost:9670/ > /dev/null; then
         echo "Service is up!"
         break
     fi
@@ -26,16 +26,16 @@ cleanup() {
 trap cleanup EXIT
 
 echo "Creating bucket..."
-curl -X PUT http://localhost:8080/tag-bucket
+curl -X PUT http://localhost:9670/tag-bucket
 
 echo "Putting object..."
-curl -X PUT -d "Test Content" http://localhost:8080/tag-bucket/test.txt
+curl -X PUT -d "Test Content" http://localhost:9670/tag-bucket/test.txt
 
 echo "Putting object tags..."
-curl -X PUT "http://localhost:8080/tag-bucket/test.txt?tagging" -d "env=prod&team=platform&version=1.0"
+curl -X PUT "http://localhost:9670/tag-bucket/test.txt?tagging" -d "env=prod&team=platform&version=1.0"
 
 echo "Getting object tags..."
-TAGS=$(curl -s "http://localhost:8080/tag-bucket/test.txt?tagging")
+TAGS=$(curl -s "http://localhost:9670/tag-bucket/test.txt?tagging")
 echo "Tags: $TAGS"
 
 if echo "$TAGS" | grep -q "env"; then
@@ -53,10 +53,10 @@ else
 fi
 
 echo "Putting bucket tags..."
-curl -X PUT "http://localhost:8080/tag-bucket?tagging" -d "purpose=testing&owner=ci"
+curl -X PUT "http://localhost:9670/tag-bucket?tagging" -d "purpose=testing&owner=ci"
 
 echo "Getting bucket tags..."
-BTAGS=$(curl -s "http://localhost:8080/tag-bucket?tagging")
+BTAGS=$(curl -s "http://localhost:9670/tag-bucket?tagging")
 echo "Bucket Tags: $BTAGS"
 
 if echo "$BTAGS" | grep -q "purpose"; then
@@ -67,10 +67,10 @@ else
 fi
 
 echo "Deleting object tags..."
-curl -X DELETE "http://localhost:8080/tag-bucket/test.txt?tagging"
+curl -X DELETE "http://localhost:9670/tag-bucket/test.txt?tagging"
 
 echo "Verifying tags deleted..."
-TAGS_AFTER=$(curl -s "http://localhost:8080/tag-bucket/test.txt?tagging")
+TAGS_AFTER=$(curl -s "http://localhost:9670/tag-bucket/test.txt?tagging")
 if echo "$TAGS_AFTER" | grep -q "<TagSet></TagSet>"; then
     echo "SUCCESS: Tags deleted (empty TagSet)"
 else

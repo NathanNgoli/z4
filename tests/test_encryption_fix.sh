@@ -15,7 +15,7 @@ ENC_KEY="0123456789012345678901234567890101234567890123456789012345678901"
 echo "Starting z4 with encryption..."
 # We run the binary directly if possible, or use docker. 
 # Docker is cleaner for env vars.
-docker run -d --name z4-enc -p 9090:8080 -v $(pwd)/data_enc:/app/data -e Z4_ENCRYPTION_KEY=$ENC_KEY z4:latest /app/z4 server
+docker run -d --name z4-enc -p 9090:9670 -v $(pwd)/data_enc:/app/data -e Z4_ENCRYPTION_KEY=$ENC_KEY z4:latest /app/z4 server
 
 echo "Waiting for service..."
 for i in {1..10}; do

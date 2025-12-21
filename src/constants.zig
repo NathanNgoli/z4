@@ -14,8 +14,8 @@ pub const MIN_BUCKET_NAME_LENGTH: usize = 3;
 pub const MAX_REQUEST_LINE_LENGTH: usize = 8192;
 pub const LIST_OBJECTS_MAX_KEYS: usize = 1000;
 
-pub const DEFAULT_HTTP_PORT: u16 = 8080;
-pub const DEFAULT_GOSSIP_PORT: u16 = 8081;
+pub const DEFAULT_HTTP_PORT: u16 = 9670;
+pub const DEFAULT_GOSSIP_PORT: u16 = 9671;
 pub const DEFAULT_DATA_PATH = "data";
 pub const DEFAULT_NODE_ID = "node1";
 pub const DEFAULT_OWNER_ID = "z4-owner";

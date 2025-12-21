@@ -11,7 +11,7 @@ zig build-exe tests/stress_memory.zig --name stress_tool
 
 # Start the server
 echo "Starting Z4 server..."
-./zig-out/bin/z4 server --port 8080 --data perf_data --debug > server.log 2>&1 &
+./zig-out/bin/z4 server --port 9670 --data perf_data --debug > server.log 2>&1 &
 SERVER_PID=$!
 
 # Wait for server to be ready
@@ -38,7 +38,7 @@ MONITOR_PID=$!
 
 # Run the stress test (20 concurrent uploads of 100MB each)
 echo "Running stress test (20 concurrent 100MB uploads, total 2GB)..."
-./stress_tool --endpoint http://127.0.0.1:8080 --concurrency 20 --size-mb 100
+./stress_tool --endpoint http://127.0.0.1:9670 --concurrency 20 --size-mb 100
 
 # Stop server and monitor
 kill $SERVER_PID

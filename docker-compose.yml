@@ -2,11 +2,11 @@ services:
   z4:
     build: .
     ports:
-      - "8080:8080"
-      - "8081:8081"
+      - "9670:9670"
+      - "9671:9671"
     volumes:
       - ./data:/app/data
     environment:
       - Z4_ENCRYPTION_KEY=${Z4_ENCRYPTION_KEY:-}
-    command: ["/app/z4", "server", "--port", "8080", "--gossip-port", "8081", "--data", "/app/data"]
+    command: ["/app/z4", "server", "--port", "9670", "--gossip-port", "9671", "--data", "/app/data"]
     restart: always

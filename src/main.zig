@@ -391,8 +391,8 @@ fn printHelp() void {
         \\  help                Show this help message
         \\
         \\SERVER OPTIONS:
-        \\  --port <port>       HTTP port (default: 8080)
-        \\  --gossip-port <port>  Gossip port (default: 8081)
+        \\  --port <port>       HTTP port (default: 9670)
+        \\  --gossip-port <port>  Gossip port (default: 9671)
         \\  --data <path>       Data directory (default: data)
         \\  --id <id>           Node ID (default: node1)
         \\  --join <host:port>  Join existing cluster
@@ -407,7 +407,7 @@ fn printHelp() void {
         \\  --owner             Grant owner access (full control)
         \\
         \\EXAMPLES:
-        \\  z4 server --port 8080 --data ./data
+        \\  z4 server --port 9670 --data ./data
         \\  z4 key create admin
         \\  z4 bucket create mybucket
         \\  z4 bucket allow mybucket --key admin --read --write
@@ -487,7 +487,7 @@ fn runServer(allocator: std.mem.Allocator, args: []const []const u8) !void {
     if (join_addr) |addr| {
         var iter = std.mem.splitScalar(u8, addr, ':');
         const host = iter.next() orelse "127.0.0.1";
-        const p_str = iter.next() orelse "8081";
+        const p_str = iter.next() orelse "9671";
         const p = try std.fmt.parseInt(u16, p_str, 10);
         try gossip.joinCluster(host, p);
     }

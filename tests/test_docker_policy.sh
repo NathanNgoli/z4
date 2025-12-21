@@ -9,11 +9,11 @@ docker compose down || true
 
 echo "Starting Docker container..."
 docker build -t z4:latest .
-docker run -d --name z4-policy -p 8080:8080 -v $(pwd)/data:/app/data z4:latest /app/z4 server
+docker run -d --name z4-policy -p 9670:9670 -v $(pwd)/data:/app/data z4:latest /app/z4 server
 
 echo "Waiting for service..."
 for i in {1..30}; do
-    if curl -s http://localhost:8080/ > /dev/null; then
+    if curl -s http://localhost:9670/ > /dev/null; then
         echo "Service is up!"
         break
     fi
@@ -26,7 +26,7 @@ cleanup() {
 trap cleanup EXIT
 
 echo "Creating bucket..."
-curl -X PUT http://localhost:8080/policy-bucket
+curl -X PUT http://localhost:9670/policy-bucket
 
 POLICY='{
   "Version": "2012-10-17",
@@ -41,10 +41,10 @@ POLICY='{
 }'
 
 echo "Setting bucket policy..."
-curl -X PUT "http://localhost:8080/policy-bucket?policy" -H "Content-Type: application/json" -d "$POLICY"
+curl -X PUT "http://localhost:9670/policy-bucket?policy" -H "Content-Type: application/json" -d "$POLICY"
 
 echo "Getting bucket policy..."
-RETURNED_POLICY=$(curl -s "http://localhost:8080/policy-bucket?policy")
+RETURNED_POLICY=$(curl -s "http://localhost:9670/policy-bucket?policy")
 echo "Policy: $RETURNED_POLICY"
 
 if echo "$RETURNED_POLICY" | grep -q "GetObject"; then
@@ -62,7 +62,7 @@ else
 fi
 
 echo "Deleting bucket policy..."
-DELETE_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X DELETE "http://localhost:8080/policy-bucket?policy")
+DELETE_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X DELETE "http://localhost:9670/policy-bucket?policy")
 if [ "$DELETE_STATUS" = "204" ]; then
     echo "SUCCESS: Policy deleted (204)"
 else
@@ -71,7 +71,7 @@ else
 fi
 
 echo "Verifying policy deleted (should get 404)..."
-GET_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:8080/policy-bucket?policy")
+GET_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:9670/policy-bucket?policy")
 if [ "$GET_STATUS" = "404" ]; then
     echo "SUCCESS: Policy not found (404)"
 else

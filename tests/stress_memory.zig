@@ -9,7 +9,7 @@ pub fn main() !void {
     const args = try std.process.argsAlloc(allocator);
     defer std.process.argsFree(allocator, args);
 
-    var endpoint: []const u8 = "http://127.0.0.1:8080";
+    var endpoint: []const u8 = "http://127.0.0.1:9670";
     var concurrency: usize = 20;
     var size_mb: u64 = 100;
 
@@ -72,7 +72,7 @@ fn worker(allocator: std.mem.Allocator, endpoint_str: []const u8, size_mb: u64, 
         return;
     };
     const hostname = if (uri.host) |h| h.percent_encoded else "localhost";
-    const port = uri.port orelse 8080;
+    const port = uri.port orelse 9670;
 
     const peer = std.net.Address.parseIp(hostname, port) catch |e| {
         std.debug.print("IP Parse Error (host={s}): {}\n", .{ hostname, e });

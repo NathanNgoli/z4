@@ -9,11 +9,11 @@ docker compose down || true
 
 echo "Starting Docker container..."
 docker build -t z4:latest .
-docker run -d --name z4-lifecycle -p 8080:8080 -v $(pwd)/data:/app/data z4:latest /app/z4 server
+docker run -d --name z4-lifecycle -p 9670:9670 -v $(pwd)/data:/app/data z4:latest /app/z4 server
 
 echo "Waiting for service..."
 for i in {1..30}; do
-    if curl -s http://localhost:8080/ > /dev/null; then
+    if curl -s http://localhost:9670/ > /dev/null; then
         echo "Service is up!"
         break
     fi
@@ -26,10 +26,10 @@ cleanup() {
 trap cleanup EXIT
 
 echo "Creating bucket..."
-curl -X PUT http://localhost:8080/lc-bucket
+curl -X PUT http://localhost:9670/lc-bucket
 
 echo "Checking lifecycle (should be 404 - not configured)..."
-LC_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:8080/lc-bucket?lifecycle")
+LC_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:9670/lc-bucket?lifecycle")
 if [ "$LC_STATUS" = "404" ]; then
     echo "SUCCESS: No lifecycle configured (404)"
 else
@@ -49,10 +49,10 @@ LIFECYCLE='<?xml version="1.0" encoding="UTF-8"?>
 </LifecycleConfiguration>'
 
 echo "Setting lifecycle configuration..."
-curl -X PUT "http://localhost:8080/lc-bucket?lifecycle" -H "Content-Type: application/xml" -d "$LIFECYCLE"
+curl -X PUT "http://localhost:9670/lc-bucket?lifecycle" -H "Content-Type: application/xml" -d "$LIFECYCLE"
 
 echo "Getting lifecycle configuration..."
-RETURNED_LC=$(curl -s "http://localhost:8080/lc-bucket?lifecycle")
+RETURNED_LC=$(curl -s "http://localhost:9670/lc-bucket?lifecycle")
 echo "Lifecycle: $RETURNED_LC"
 
 if echo "$RETURNED_LC" | grep -q "expire-old-objects"; then
@@ -70,7 +70,7 @@ else
 fi
 
 echo "Deleting lifecycle configuration..."
-DELETE_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X DELETE "http://localhost:8080/lc-bucket?lifecycle")
+DELETE_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X DELETE "http://localhost:9670/lc-bucket?lifecycle")
 if [ "$DELETE_STATUS" = "204" ]; then
     echo "SUCCESS: Lifecycle deleted (204)"
 else
@@ -79,7 +79,7 @@ else
 fi
 
 echo "Verifying lifecycle deleted (should get 404)..."
-GET_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:8080/lc-bucket?lifecycle")
+GET_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:9670/lc-bucket?lifecycle")
 if [ "$GET_STATUS" = "404" ]; then
     echo "SUCCESS: Lifecycle not found (404)"
 else

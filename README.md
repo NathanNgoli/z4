@@ -95,8 +95,8 @@ services:
   z4:
     build: .
     ports:
-      - "8080:8080"   # S3 API
-      - "8081:8081"   # Gossip protocol
+      - "9670:9670"   # S3 API
+      - "9671:9671"   # Gossip protocol
     volumes:
       - ./data:/app/data
     environment:
@@ -138,8 +138,8 @@ Z4 includes a built-in CLI for administration.
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `--port` | 8080 | HTTP API port |
-| `--gossip-port` | 8081 | Cluster gossip port (UDP) |
+| `--port` | 9670 | HTTP API port |
+| `--gossip-port` | 9671 | Cluster gossip port (UDP) |
 | `--data` | data | Storage directory |
 | `--id` | node1 | Unique node identifier |
 | `--join` | - | Seed node address (host:port) |
@@ -163,8 +163,8 @@ After creating a key via CLI:
 aws configure set aws_access_key_id <YOUR_ACCESS_KEY_ID>
 aws configure set aws_secret_access_key <YOUR_SECRET_KEY>
 
-aws --endpoint-url http://localhost:8080 s3 cp file.txt s3://mybucket/
-aws --endpoint-url http://localhost:8080 s3 ls s3://mybucket/
+aws --endpoint-url http://localhost:9670 s3 cp file.txt s3://mybucket/
+aws --endpoint-url http://localhost:9670 s3 ls s3://mybucket/
 ```
 
 ## Architecture

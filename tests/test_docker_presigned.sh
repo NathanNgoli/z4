@@ -15,11 +15,11 @@ docker rm -f z4-auth >/dev/null 2>&1 || true
 # Ensure data dir is clean for fresh keys
 rm -rf $(pwd)/data 2>/dev/null || true
 mkdir -p $(pwd)/data
-docker run -d --name z4-auth -p 8080:8080 -v $(pwd)/data:/app/data z4:latest /app/z4 server
+docker run -d --name z4-auth -p 9670:9670 -v $(pwd)/data:/app/data z4:latest /app/z4 server
 
 echo "Waiting for service to be healthy..."
 for i in {1..30}; do
-    if curl -s http://localhost:8080/ > /dev/null; then
+    if curl -s http://localhost:9670/ > /dev/null; then
         echo "Service is up!"
         break
     fi
@@ -84,21 +84,21 @@ sign_and_curl() {
 
 # 1. Create Bucket
 echo "Creating bucket..."
-sign_and_curl "PUT" "http://localhost:8080/ps-bucket" "$ACCESS_KEY" "$SECRET_KEY" "" ""
+sign_and_curl "PUT" "http://localhost:9670/ps-bucket" "$ACCESS_KEY" "$SECRET_KEY" "" ""
 
 # 1b. Set Bucket ACL to Private (Owner only)
 echo "Setting bucket private..."
 ACL_BODY="owner=$ACCESS_KEY"
-sign_and_curl "PUT" "http://localhost:8080/ps-bucket?acl" "$ACCESS_KEY" "$SECRET_KEY" "$ACL_BODY" ""
+sign_and_curl "PUT" "http://localhost:9670/ps-bucket?acl" "$ACCESS_KEY" "$SECRET_KEY" "$ACL_BODY" ""
 
 # 2. Put Object
 echo "Putting object..."
 DATA="Secret Data"
-sign_and_curl "PUT" "http://localhost:8080/ps-bucket/secret.txt" "$ACCESS_KEY" "$SECRET_KEY" "$DATA" ""
+sign_and_curl "PUT" "http://localhost:9670/ps-bucket/secret.txt" "$ACCESS_KEY" "$SECRET_KEY" "$DATA" ""
 
 # 3. Test No Auth (Should Fail)
 echo "Testing No Auth..."
-HTTP_CODE=$(curl -o /dev/null -s -w "%{http_code}" http://localhost:8080/ps-bucket/secret.txt)
+HTTP_CODE=$(curl -o /dev/null -s -w "%{http_code}" http://localhost:9670/ps-bucket/secret.txt)
 if [ "$HTTP_CODE" == "403" ]; then
     echo "SUCCESS: Rejected no auth (403)"
 else
@@ -144,7 +144,7 @@ generate_presigned_url() {
     
     local canonical_querystring="X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=$ACCESS_KEY%2F$cred_scope_enc&X-Amz-Date=$date_iso&X-Amz-Expires=$expiration&X-Amz-SignedHeaders=$signed_headers"
     
-    local canonical_headers="host:localhost:8080\n"
+    local canonical_headers="host:localhost:9670\n"
     local payload_hash="UNSIGNED-PAYLOAD"
     local canonical_request="$method\n$canonical_uri\n$canonical_querystring\n$canonical_headers\n$signed_headers\n$payload_hash"
     
@@ -159,7 +159,7 @@ generate_presigned_url() {
     local k_signing=$(hmac_sha256 "$k_service" "aws4_request")
     local signature=$(hmac_sha256 "$k_signing" "$string_to_sign")
     
-    echo "http://localhost:8080$canonical_uri?$canonical_querystring&X-Amz-Signature=$signature"
+    echo "http://localhost:9670$canonical_uri?$canonical_querystring&X-Amz-Signature=$signature"
 }
 
 URL=$(generate_presigned_url)
@@ -174,7 +174,7 @@ fi
 
 # 5. Test Bad Presigned
 echo "Testing Bad Presigned..."
-URL_BAD="http://localhost:8080/ps-bucket/secret.txt?X-Amz-Credential=wrongkey&X-Amz-Signature=dummy"
+URL_BAD="http://localhost:9670/ps-bucket/secret.txt?X-Amz-Credential=wrongkey&X-Amz-Signature=dummy"
 HTTP_CODE=$(curl -o /dev/null -s -w "%{http_code}" "$URL_BAD")
 if [ "$HTTP_CODE" == "403" ]; then
     echo "SUCCESS: Rejected bad presigned (403)"

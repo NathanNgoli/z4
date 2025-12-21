@@ -9,11 +9,11 @@ docker compose down || true
 
 echo "Starting Docker container..."
 docker build -t z4:latest .
-docker run -d --name z4-meta -p 8080:8080 -v $(pwd)/data:/app/data z4:latest /app/z4 server
+docker run -d --name z4-meta -p 9670:9670 -v $(pwd)/data:/app/data z4:latest /app/z4 server
 
 echo "Waiting for service..."
 for i in {1..30}; do
-    if curl -s http://localhost:8080/ > /dev/null; then
+    if curl -s http://localhost:9670/ > /dev/null; then
         echo "Service is up!"
         break
     fi
@@ -26,7 +26,7 @@ cleanup() {
 trap cleanup EXIT
 
 echo "Creating bucket..."
-curl -v -X PUT http://localhost:8080/meta-bucket
+curl -v -X PUT http://localhost:9670/meta-bucket
 
 echo "Putting object with Metadata..."
 curl -v -X PUT \
@@ -34,10 +34,10 @@ curl -v -X PUT \
   -H "x-amz-meta-author: carsen" \
   -H "x-amz-meta-version: 1.0" \
   -d "Metadata Test" \
-  http://localhost:8080/meta-bucket/meta.txt
+  http://localhost:9670/meta-bucket/meta.txt
 
 echo "Verifying HEAD metadata..."
-HEAD_OUTPUT=$(curl -I -s http://localhost:8080/meta-bucket/meta.txt)
+HEAD_OUTPUT=$(curl -I -s http://localhost:9670/meta-bucket/meta.txt)
 echo "$HEAD_OUTPUT"
 
 if echo "$HEAD_OUTPUT" | grep -i "x-amz-meta-author: carsen"; then
@@ -55,7 +55,7 @@ else
 fi
 
 echo "Verifying GET metadata..."
-GET_OUTPUT=$(curl -i -s http://localhost:8080/meta-bucket/meta.txt)
+GET_OUTPUT=$(curl -i -s http://localhost:9670/meta-bucket/meta.txt)
 if echo "$GET_OUTPUT" | grep -i "x-amz-meta-author: carsen"; then
     echo "SUCCESS: Found author metadata in GET"
 else

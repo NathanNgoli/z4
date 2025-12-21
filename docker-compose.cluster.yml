@@ -3,13 +3,13 @@ services:
     build: .
     container_name: z4-node1
     ports:
-      - "8080:8080"
-      - "8081:8081"
+      - "9670:9670"
+      - "9671:9671"
     volumes:
       - ./data/node1:/app/data
     environment:
       - Z4_ENCRYPTION_KEY=${Z4_ENCRYPTION_KEY:-}
-    command: ["/app/z4", "server", "--id", "node1", "--port", "8080", "--gossip-port", "8081"]
+    command: ["/app/z4", "server", "--id", "node1", "--port", "9670", "--gossip-port", "9671"]
     networks:
       - z4net
     restart: unless-stopped
@@ -18,13 +18,13 @@ services:
     build: .
     container_name: z4-node2
     ports:
-      - "8082:8080"
-      - "8083:8081"
+      - "8082:9670"
+      - "8083:9671"
     volumes:
       - ./data/node2:/app/data
     environment:
       - Z4_ENCRYPTION_KEY=${Z4_ENCRYPTION_KEY:-}
-    command: ["/app/z4", "server", "--id", "node2", "--port", "8080", "--gossip-port", "8081", "--join", "z4-node1:8081"]
+    command: ["/app/z4", "server", "--id", "node2", "--port", "9670", "--gossip-port", "9671", "--join", "z4-node1:9671"]
     depends_on:
       - z4-node1
     networks:
@@ -35,13 +35,13 @@ services:
     build: .
     container_name: z4-node3
     ports:
-      - "8084:8080"
-      - "8085:8081"
+      - "8084:9670"
+      - "8085:9671"
     volumes:
       - ./data/node3:/app/data
     environment:
       - Z4_ENCRYPTION_KEY=${Z4_ENCRYPTION_KEY:-}
-    command: ["/app/z4", "server", "--id", "node3", "--port", "8080", "--gossip-port", "8081", "--join", "z4-node1:8081"]
+    command: ["/app/z4", "server", "--id", "node3", "--port", "9670", "--gossip-port", "9671", "--join", "z4-node1:9671"]
     depends_on:
       - z4-node1
     networks:
