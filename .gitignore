@@ -1,0 +1,10 @@
+.zig-cache
+zig-out
+data/
+dist/
+benchmark
+data_debug/
+bench_data/
+data_*
+*.log
+*.txt

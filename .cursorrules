@@ -1,0 +1,9 @@
+globs: ["**/*.zig", "build.zig", ".gitignore"]
+
+rules:
+  - "No comments in code. Code must be self-explanatory."
+  - "Use Zig 0.15.2+ (latest dev/stable)."
+  - "Prioritize maximum performance: usage of ReleaseFast, avoiding allocations in hot paths."
+  - "Error handling: Handle all errors explicitly. No discarding err with `_ = err` unless absolutely safe."
+  - "Style: Standard Zig fmt. Clear variable names."
+  - "Architecture: Distributed, ring-based, replication-aware."
