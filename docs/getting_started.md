@@ -16,7 +16,7 @@ Z4 is a high-performance, S3-compatible object storage server written in Zig.
 
 ### 1. Build
 ```bash
-git clone https://github.com/cj/z4.git
+git clone https://github.com/metaspartan/z4.git
 cd z4
 zig build -Doptimize=ReleaseSafe
 ```
