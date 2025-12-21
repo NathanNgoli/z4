@@ -63,7 +63,7 @@ jobs:
           find artifacts -type f -exec mv {} release/ \;
           
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: release/*
           generate_release_notes: true
