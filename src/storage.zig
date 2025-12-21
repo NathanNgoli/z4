@@ -3,8 +3,15 @@ const fs = std.fs;
 const utils = @import("utils.zig");
 const constants = @import("constants.zig");
 const Aes256Gcm = std.crypto.aead.aes_gcm.Aes256Gcm;
+const builtin = @import("builtin");
 const c = @cImport({
-    @cInclude("sys/statvfs.h");
+    if (builtin.os.tag == .macos) {
+        @cInclude("sys/statvfs.h");
+    } else if (builtin.os.tag == .linux) {
+        @cInclude("sys/vfs.h");
+    } else {
+        @cInclude("sys/statvfs.h");
+    }
 });
 
 pub const Storage = struct {
@@ -45,11 +52,15 @@ pub const Storage = struct {
     }
 
     fn checkDiskSpace(self: *Storage, required_bytes: u64) !void {
-        var stat: c.struct_statvfs = undefined;
-        if (c.fstatvfs(self.root_dir.fd, &stat) != 0) {
-            return error.DiskCheckFailed;
-        }
-        const available = @as(u64, stat.f_bavail) * @as(u64, stat.f_frsize);
+        const available = if (builtin.os.tag == .linux) blk: {
+            var stat: c.struct_statfs = undefined;
+            if (c.fstatfs(self.root_dir.fd, &stat) != 0) return error.DiskCheckFailed;
+            break :blk @as(u64, stat.f_bavail) * @as(u64, stat.f_bsize);
+        } else blk: {
+            var stat: c.struct_statvfs = undefined;
+            if (c.fstatvfs(self.root_dir.fd, &stat) != 0) return error.DiskCheckFailed;
+            break :blk @as(u64, stat.f_bavail) * @as(u64, stat.f_frsize);
+        };
 
         if (required_bytes == std.math.maxInt(u64)) {
             if (available < constants.MIN_DISK_FREE_SPACE) return error.DiskFull;
