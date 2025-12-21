@@ -55,11 +55,11 @@ pub const Storage = struct {
         const available = if (builtin.os.tag == .linux) blk: {
             var stat: c.struct_statfs = undefined;
             if (c.fstatfs(self.root_dir.fd, &stat) != 0) return error.DiskCheckFailed;
-            break :blk @as(u64, stat.f_bavail) * @as(u64, stat.f_bsize);
+            break :blk @as(u64, @intCast(stat.f_bavail)) * @as(u64, @intCast(stat.f_bsize));
         } else blk: {
             var stat: c.struct_statvfs = undefined;
             if (c.fstatvfs(self.root_dir.fd, &stat) != 0) return error.DiskCheckFailed;
-            break :blk @as(u64, stat.f_bavail) * @as(u64, stat.f_frsize);
+            break :blk @as(u64, @intCast(stat.f_bavail)) * @as(u64, @intCast(stat.f_frsize));
         };
 
         if (required_bytes == std.math.maxInt(u64)) {
